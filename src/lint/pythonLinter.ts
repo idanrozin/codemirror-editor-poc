@@ -7,7 +7,6 @@ export function pythonLinter() {
     const text = view.state.doc.toString();
     const lines = text.split('\n');
 
-    // Keep track of decorator context
     let hasHlpDecorator = false;
 
     lines.forEach((line, i) => {
@@ -22,11 +21,11 @@ export function pythonLinter() {
 
       const trimmedLine = line.trim();
 
-      // Check for missing colons after if/for/while/def/class
-      const missingColonRegex = /^(if|for|while|def|class)\b[^:]*$/;
-      if (trimmedLine.match(missingColonRegex)) {
-        // Only skip error if it's a decorated function
-        if (!(hasHlpDecorator && trimmedLine.startsWith('def'))) {
+      // Check function definitions
+      if (trimmedLine.startsWith('def ')) {
+        // Check for missing colons
+        const missingColonRegex = /^(if|for|while|def|class)\b[^:]*$/;
+        if (trimmedLine.match(missingColonRegex) && !hasHlpDecorator) {
           const linePos = view.state.doc.line(i + 1);
           diagnostics.push({
             from: linePos.from,
@@ -35,11 +34,35 @@ export function pythonLinter() {
             message: 'Missing colon (:)',
           });
         }
-      }
 
-      // Reset decorator flag after processing a function definition
-      if (trimmedLine.startsWith('def')) {
+        // Check for @hlp decorated functions without arguments
+        if (hasHlpDecorator) {
+          // This regex checks for empty parentheses or missing parentheses
+          const noArgsRegex = /def\s+\w+\s*\(\s*\)|def\s+\w+\s*:/;
+          if (trimmedLine.match(noArgsRegex)) {
+            const linePos = view.state.doc.line(i + 1);
+            diagnostics.push({
+              from: linePos.from,
+              to: linePos.to,
+              severity: 'error',
+              message:
+                '@hlp decorated functions must have at least one argument',
+            });
+          }
+        }
+
+        // Reset decorator flag after processing function definition
         hasHlpDecorator = false;
+      }
+      // Check other statements for missing colons
+      else if (trimmedLine.match(/^(if|for|while|class)\b[^:]*$/)) {
+        const linePos = view.state.doc.line(i + 1);
+        diagnostics.push({
+          from: linePos.from,
+          to: linePos.to,
+          severity: 'error',
+          message: 'Missing colon (:)',
+        });
       }
 
       // Check for incorrect indentation
