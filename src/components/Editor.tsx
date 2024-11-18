@@ -6,10 +6,19 @@ import { indentUnit } from '@codemirror/language';
 import { linter, lintGutter } from '@codemirror/lint';
 import { FC, useState } from 'react';
 import { pythonLinter } from '../lint/pythonLinter';
+import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
+import { tags as t } from '@lezer/highlight';
 
 const Editor: FC = () => {
   const [code, setCode] = useState('# Write your Python code here\n');
   const [isDarkMode, setIsDarkMode] = useState(true);
+
+  const customHighlightStyle = HighlightStyle.define([
+    {
+      tag: t.special(t.tagName), // Using a valid Tag instead of string
+      color: '#000',
+    },
+  ]);
 
   return (
     <div className="space-y-4">
@@ -31,6 +40,7 @@ const Editor: FC = () => {
             indentUnit.of('    '),
             lintGutter(),
             linter(pythonLinter()),
+            syntaxHighlighting(customHighlightStyle),
           ]}
           onChange={(value, _viewUpdate) => {
             setCode(value);
