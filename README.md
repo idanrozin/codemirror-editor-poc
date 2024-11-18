@@ -1,8 +1,34 @@
-# React + Vite
+# CodeMirror Python Editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web-based Python code editor built with React, TypeScript, and CodeMirror. Features syntax highlighting, linting, and dark/light mode support.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🐍 Python syntax highlighting and language support
+- 🔍 Real-time Python linting
+- 🌓 Dark/Light mode toggle
+- 🎨 Custom syntax highlighting
+- ⌨️ Code autocompletion
+- 📏 Smart indentation
+- 🔬 Lint gutter indicators
+
+## Tech Stack
+
+- React 18
+- TypeScript
+- Vite
+- TailwindCSS
+- CodeMirror 6
+- ESLint + Prettier
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (Latest LTS version recommended)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
