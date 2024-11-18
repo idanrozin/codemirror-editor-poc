@@ -31,4 +31,5 @@ A modern web-based Python code editor built with React, TypeScript, and CodeMirr
 ### Installation
 
 1. Clone the repository
-2. Install dependencies:
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
